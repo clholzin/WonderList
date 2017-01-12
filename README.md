@@ -1,3 +1,7 @@
+# openUI5WonderList-Sample
+WonderList example of UI5 app
+
+
 ![openui5](http://openui5.org/images/OpenUI5_new_big_side.png)
 
 # openui5-sample-app
@@ -39,3 +43,5 @@ grunt
 ```
 
 6. Open the app in your browser: [http://localhost:8080](http://localhost:8080)
+
+
