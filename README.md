@@ -1,6 +1,6 @@
 ![openui5](http://openui5.org/images/OpenUI5_new_big_side.png)
 
-# openui5-sample-app
+# WonderList Sample App using OpenUI5
 
 > [OpenUI5](https://github.com/SAP/openui5) sample app using Grunt & Bower
 
