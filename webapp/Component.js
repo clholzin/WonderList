@@ -1,6 +1,6 @@
 sap.ui.core.UIComponent.extend('todo.Component', {
 	metadata: {
-		name: 'Sample todo app',
+		name: 'WonderList',
 		version: '1.0.0',
 		includes: ['css/styles.css'],
 		dependencies: {

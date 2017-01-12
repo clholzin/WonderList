@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 
-	sap.ui.controller('todo.view.App', {
+	sap.ui.controller('todo.controller.App', {
 
 		onInit: function() {
 			this.oModel = new sap.ui.model.json.JSONModel({
@@ -9,15 +9,16 @@
 				todos: [
 					{
 						title: 'Start this app',
-						completed: true
+						completed: false
 					},
 					{
 						title: 'Learn OpenUI5',
 						completed: false
 					}
 				],
-				someCompleted: true,
-				completedCount: 1
+				completed:[],
+				someCompleted: false,
+				completedCount: 0
 			});
 			this.getView().setModel(this.oModel);
 		},
@@ -33,32 +34,44 @@
 		},
 
 		toggleCompleted: function(oEvent) {
-			var iCompletedCount = 0;
-			var aTodos = this.oModel.getObject('/todos');
-			var i = aTodos.length;
-			while (i--) {
-				var oTodo = aTodos[i];
-				if (oTodo.completed) {
+			var iCompletedCount = 0,
+				aTodos = this.oModel.getObject('/todos'),
+				completedTodos = this.oModel.getObject('/completed'),
+				i = aTodos.length;
+			 aTodos.map(function (obj,i) {
+			//	var oTodo = aTodos[i];
+				if (obj.completed) {
+					obj.completed = false;
+					completedTodos.unshift(obj);
+					aTodos.splice(i, 1);
 					iCompletedCount++;
 				}
-			}
+			});
+			//this.oModel.setData({todos:aTodos});
 			this.setCompletedCount(iCompletedCount);
 			this.oModel.refresh();
 		},
 
 		clearCompleted: function(oEvent) {
-			var aTodos = this.oModel.getObject('/todos');
+			var aTodos = this.oModel.getObject('/completed');
+			var iCompletedCount = 0;
 			var i = aTodos.length;
-			while (i--) {
+			aTodos.map((obj,i)=>{
 				var oTodo = aTodos[i];
 				if (oTodo.completed) {
 					aTodos.splice(i, 1);
+					iCompletedCount++;
 				}
-			}
+			});
+			this.setCompletedCount(iCompletedCount);
+			this.oModel.refresh();
+		},
+		clearAllCompleted: function(oEvent) {
+			//var aTodos = this.oModel.getObject('/completed');
+			this.oModel.setProperty('/completed', []);
 			this.setCompletedCount(0);
 			this.oModel.refresh();
 		},
-
 		setCompletedCount: function(iCount) {
 			this.oModel.setProperty('/completedCount', iCount);
 			this.oModel.setProperty('/someCompleted', iCount > 0);

@@ -9,10 +9,19 @@ module.exports = function(grunt) {
 			dist: 'dist',
 			bower_components: 'bower_components'
 		},
-
+		watch: {
+			all: {
+				files: 'app/**/*',
+				tasks: ['newer:copy:all','newer:babel:all']
+			},
+			options: {
+				atBegin: true,
+				spawn: false
+			}
+		},
 		connect: {
 			options: {
-				port: 8080,
+				port: 9003,
 				hostname: '*'
 			},
 			src: {},
@@ -57,6 +66,15 @@ module.exports = function(grunt) {
 		},
 
 		copy: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: '<%= dir.webapp %>',
+					src: ['**/*', '!**/*.js'],
+					dest: '<%= dir.dist %>/'
+				}]
+
+			},
 			dist: {
 				files: [ {
 					expand: true,
@@ -72,6 +90,33 @@ module.exports = function(grunt) {
 
 		eslint: {
 			webapp: ['<%= dir.webapp %>']
+		},
+
+		babel: {
+			options: {
+				sourceMap: true,
+				presets: ['babel-preset-es2015']
+			},
+			all: {
+				files: [{
+					expand: true,
+					cwd: '<%= dir.webapp %>',
+					src: ['**/*.js'],
+					dest: '<%= dir.dist %>',
+					ext:'.js'
+				}]
+			},
+			dist: {
+				files: [ {
+					expand: true,
+					cwd: '<%= dir.dist %>',
+					src: [
+						'**/*.js'//,'!test/**'
+					],
+					dest: '<%= dir.dist %>',
+					ext:'.js'
+				}]
+			}
 		}
 
 	});
@@ -82,23 +127,24 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-openui5');
 	grunt.loadNpmTasks('grunt-eslint');
+	grunt.loadNpmTasks('grunt-babel');
 
 	// Server task
 	grunt.registerTask('serve', function(target) {
 		grunt.task.run('openui5_connect:' + (target || 'src') + ':keepalive');
 	});
-
 	// Linting task
 	grunt.registerTask('lint', ['eslint']);
 
 	// Build task
-	grunt.registerTask('build', ['openui5_preload', 'copy']);
+	grunt.registerTask('build', ['openui5_preload', 'copy','babel:dist']);
 
 	// Default task
 	grunt.registerTask('default', [
 		'lint',
 		'clean',
 		'build',
+		'babel:dist',
 		'serve:dist'
 	]);
 };

@@ -1,5 +1,5 @@
 {
-  "name": "openui5-sample-app",
+  "name": "Demo",
   "version": "0.1.0",
   "description": "Sample of an OpenUI5 app",
   "private": true,
@@ -7,10 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
     "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-openui5": "^0.10.0"
   }
