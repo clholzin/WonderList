@@ -1,5 +1,6 @@
+'use strict';
 (function() {
-	'use strict';
+
 
 	sap.ui.controller('todo.controller.App', {
 
@@ -24,7 +25,7 @@
 		},
 
 		addTodo: function() {
-			var aTodos = this.oModel.getObject('/todos');
+			let aTodos = this.oModel.getObject('/todos');
 			aTodos.unshift({
 				title: this.oModel.getProperty('/newTodo'),
 				completed: false
@@ -34,12 +35,13 @@
 		},
 
 		toggleCompleted: function(oEvent) {
-			var iCompletedCount = 0,
+			let completed = this.oModel.getProperty('/completedCount'),
+				iCompletedCount = typeof completed == 'undefined' ? 0:completed,
 				aTodos = this.oModel.getObject('/todos'),
 				completedTodos = this.oModel.getObject('/completed'),
 				i = aTodos.length;
 			 aTodos.map(function (obj,i) {
-			//	var oTodo = aTodos[i];
+			//	let oTodo = aTodos[i];
 				if (obj.completed) {
 					obj.completed = false;
 					completedTodos.unshift(obj);
@@ -53,11 +55,12 @@
 		},
 
 		clearCompleted: function(oEvent) {
-			var aTodos = this.oModel.getObject('/completed');
-			var iCompletedCount = 0;
-			var i = aTodos.length;
-			aTodos.map((obj,i)=>{
-				var oTodo = aTodos[i];
+			let aTodos = this.oModel.getObject('/completed');
+			let iCompletedCount = 0;
+			let i = aTodos.length;
+			 aTodos.map((obj,i)=>{
+			//aTodos.map(function(obj,i){
+				let oTodo = aTodos[i];
 				if (oTodo.completed) {
 					aTodos.splice(i, 1);
 					iCompletedCount++;
@@ -67,7 +70,7 @@
 			this.oModel.refresh();
 		},
 		clearAllCompleted: function(oEvent) {
-			//var aTodos = this.oModel.getObject('/completed');
+			//let aTodos = this.oModel.getObject('/completed');
 			this.oModel.setProperty('/completed', []);
 			this.setCompletedCount(0);
 			this.oModel.refresh();
